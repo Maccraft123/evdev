@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use std::str::FromStr;
+
 /// Event types supported by the device.
 ///
 /// Values correspond to [/usr/include/linux/input-event-codes.h](https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h)

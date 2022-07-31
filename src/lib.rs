@@ -383,3 +383,8 @@ pub(crate) unsafe fn cast_to_bytes<T: ?Sized>(mem: &T) -> &[u8] {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EnumParseError(());
+impl fmt::Display for EnumParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Enum Parse Error")
+    }
+}

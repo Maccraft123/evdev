@@ -1,3 +1,5 @@
+#[cfg(feature = "serde")]
+use std::str::FromStr;
 /// Scancodes for key presses.
 ///
 /// Values correspond to [/usr/include/linux/input-event-codes.h](https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h)

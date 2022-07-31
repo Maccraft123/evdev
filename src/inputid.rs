@@ -1,3 +1,5 @@
+#[cfg(feature = "serde")]
+use std::str::FromStr;
 use std::fmt;
 
 #[derive(Clone)]
@@ -82,7 +84,7 @@ evdev_enum!(
     BUS_INTEL_ISHTP = 0x1F,
 );
 
-impl fmt::Display for BusType {
+/*impl fmt::Display for BusType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let s = match *self {
             Self::BUS_PCI => "PCI",
@@ -111,4 +113,4 @@ impl fmt::Display for BusType {
         };
         f.write_str(s)
     }
-}
+}*/

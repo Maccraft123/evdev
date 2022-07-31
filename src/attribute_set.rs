@@ -1,6 +1,8 @@
 use bitvec::prelude::*;
 use std::fmt;
 use std::ops::{Deref, DerefMut};
+//#[cfg(feature = "serde")]
+//use serde::{de, Serialize, Deserialize, Deserializer};
 
 /// A collection of bits representing either device capability or state.
 ///
@@ -217,6 +219,16 @@ macro_rules! evdev_enum {
                 }
             }
         }
+        impl std::fmt::Display for $t {
+            #[inline]
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                #[allow(unreachable_patterns)]
+                match *self {
+                    $(Self::$c => f.pad(stringify!($c)),)*
+                    _ => write!(f, "unknown key: {}", self.0),
+                }
+            }
+        }
         impl $crate::attribute_set::EvdevEnum for $t {
             #[inline]
             fn from_index(i: usize) -> Self {
@@ -225,6 +237,23 @@ macro_rules! evdev_enum {
             #[inline]
             fn to_index(self) -> usize {
                 self.0 as _
+            }
+        }
+        #[cfg(feature = "serde")]
+        impl<'de> serde::Deserialize<'de> for $t {
+            #[inline]
+            fn deserialize<D>(deserializer: D) -> Result<$t, D::Error>
+            where D: serde::Deserializer<'de> {
+                let s = String::deserialize(deserializer).unwrap();
+                Self::from_str(&s).map_err(serde::de::Error::custom)
+            }
+        }
+        #[cfg(feature = "serde")]
+        impl serde::Serialize for $t {
+            #[inline]
+            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+            where S: serde::Serializer {
+                serializer.serialize_str(&self.to_string())
             }
         }
     }
